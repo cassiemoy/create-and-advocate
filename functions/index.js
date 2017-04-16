@@ -5,7 +5,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-// Trying out our own function now! Some simple math - square the number!
+// Trying out our own function now - super simple, square the number from params.
 
 // This handles the request
 
@@ -32,6 +32,7 @@ exports.squareNumber = functions.database.ref('/calculations/{pushId}/number')
 // Hooking up the below algo
 
 exports.generateGroups = functions.https.onRequest((req, res) => {
+  console.log(admin.database().ref('/marchers')[0]);
   console.log(JSON.stringify(assign(responses)));
 });
 
@@ -40,7 +41,7 @@ exports.generateGroups = functions.https.onRequest((req, res) => {
 const max_group_size = 4;
 const orgs = [0,1,2,3];
 const responses = [
-    [0,1],
+    [0,1], // Marcher's selections - ask ids
     [0,1],
     [0,1],
     [0,1],

@@ -4,10 +4,27 @@
   <meta charset="UTF-8">
 </head>
 <body>
+
+  <form id="createMarcherForm">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="marcher-name">
+    </div>
+
+    <label for="first-choice">First choice: </label>
+    
+    <fieldset>
+      <input type="checkbox" name="first-choice" value="1">Event 1<br>
+      <input type="checkbox" name="first-choice" value="2">Event 2<br>
+    </fieldset>
+
+    <input type="submit" value="Create Marcher">
+  </form>
+
   <button id="button">Get stuff from Firebase</button><br/>
   <button id="generate-group">Set off the generate groups algo!</button>
   <div id="results"></div>
-
+  
   <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase.js"></script>
   <script>
 
@@ -20,34 +37,51 @@
     };
 
     firebase.initializeApp(config);
-    
     var database = firebase.database();
 
-    // 
+    // Testing connection to Firebase DB
 
     document.getElementById('button').addEventListener('click', function() {   
       database.ref('/calculations').once('value').then(function(snapshot) {
         console.log(snapshot.val());
       });
-    });
+    }); 
+
+    // Creating marcher from form
+
+    document.getElementById('createMarcherForm').addEventListener('submit', function(event) {   
+      event.preventDefault();
+  
+      var name = document.getElementById('name').value;
+      var firstChoices = []
+      document.getElementsByName('first-choice').forEach(function(element) { firstChoices.push(element.value) });
+      
+      var newMarcherKey = database.ref().child('marchers').push().key;
+
+      database.ref('marchers/' + newMarcherKey).set({
+        name: name,
+        firstChoices: firstChoices
+      });
+    }); 
+
+    // Todo: Actually generate group
 
     document.getElementById('generate-group').addEventListener('click', function() {
       var request = new XMLHttpRequest();
-      var endpoint = 'https://us-central1-function-demo-bd359.cloudfunctions.net/generateGroups'
+      var endpoint = 'https://us-central1-function-demo-bd359.cloudfunctions.net/generateGroups';
+
       request.open('GET', endpoint, true);
       
       request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
-          // Success!
-          var resp = request.responseText;
+          console.log(request.responseText);
         } else {
-          // We reached our target server, but it returned an error
+          console.log("Nope!");
         }
       };
-      
+
       request.send();
     });
   </script>
-
 </body>
 </html>
