@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <button id="button">Get stuff from Firebase</button><br/>
+  <div id="results"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCnZ0Otme1WwhM4-CEKZtLjGHCpspa4Kdw",
+      authDomain: "function-demo-bd359.firebaseapp.com",
+      databaseURL: "https://function-demo-bd359.firebaseio.com/",
+      // storageBucket: "function-demo-bd359.appspot.com",
+      // messagingSenderId: "<SENDER_ID>",
+    };
+
+    firebase.initializeApp(config);
+    var database = firebase.database();
+
+    document.getElementById('button').addEventListener('click', function() {   
+      database.ref('/calculations').once('value').then(function(snapshot) {
+        console.log(snapshot.val());
+      });
+    });
+  </script>
+
+</body>
+</html>
