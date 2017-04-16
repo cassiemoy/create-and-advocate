@@ -5,12 +5,13 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-// Trying out our own function now!
+// Trying out our own function now! Some simple math - square the number!
 
 // This handles the request
 
 exports.sendNumber = functions.https.onRequest((req, res) => {
   const number = req.query.number;
+  
   admin.database().ref('/calculations').push({number: number}).then(snapshot => {
     res.redirect(303, snapshot.ref);
   });
@@ -23,10 +24,16 @@ exports.squareNumber = functions.database.ref('/calculations/{pushId}/number')
       // Grab the current value of what was written to the Realtime Database.
       const number = event.data.val();
       console.log('Squaring!', event.params.pushId, number);
-      console.log(JSON.stringify(assign(responses)));
+
       const square = parseInt(number) * parseInt(number);
       return event.data.ref.parent.child('squared').set(square);
     });
+
+// Hooking up the below algo
+
+exports.generateGroups = functions.https.onRequest((req, res) => {
+  console.log(JSON.stringify(assign(responses)));
+});
 
 // Francis' grouping algo
 
