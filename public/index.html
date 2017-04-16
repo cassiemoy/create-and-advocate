@@ -67,6 +67,7 @@
       var name = document.getElementById('name').value;
       var email = document.getElementById('email').value; 
       var phone = document.getElementById('phone').value;
+      var zip = document.getElementById('zip').value;
 
       var askChoices = [];
       document.getElementsByName('ask-choice').forEach(function(element) { askChoices.push(element.value) });
@@ -78,6 +79,7 @@
         name: name,
         email: email,
         phone: phone,
+        zip: zip,
         askChoices: askChoices
       });
     }); 
@@ -104,7 +106,7 @@
     // Listen for value changes to set group on page
 
     database.ref('groups').on('value', function(snapshot) {
-      document.getElementById('results').innerHTML = JSON.stringify(snapshot.val();
+      document.getElementById('results').innerHTML = JSON.stringify(snapshot.val());
     });
   </script>
 </body>
