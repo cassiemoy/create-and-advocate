@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase.js"></script>
+  <script type="text/javascript" src="js/firebase.js"></script>
+</head>
+<body>
+
+  <form id="form">
+  
+    <label for="name">Organization Name*:</label>
+    <input type="text" id="name" name="Organization Name">
+
+    <label for="blurb">Organization Blurb:</label>
+    <input type="text" id="blurb" name="blurb">
+
+    <label for="logo-url">Logo URL*:</label>
+    <input type="text" id="logo-url" name="logo-url">
+
+    <label for="user-name">User Name*:</label>
+    <input type="text" id="user-name" name="User Name">
+
+    <label for="user-role">User's position at the company:</label>
+    <input type="text" id="user-role" name="User's Position">
+
+    <label for="user-email">Email*:</label>
+    <input type="text" id="user-email" name="User's Email">
+
+    <input type="submit" value="Create Organization">
+  </form>
+
+  <script>
+
+    // Creating organization from form
+
+    document.getElementById('form').addEventListener('submit', function(event) {   
+      event.preventDefault();
+      
+      var name = document.getElementById('name').value; 
+      var blurb = document.getElementById('blurb').value;
+      var logo = document.getElementById('logo-url').value; 
+      var username = document.getElementById('user-name').value;
+      var userrole = document.getElementById('user-role').value;
+      var useremail = document.getElementById('user-email').value;
+
+      var data = {
+        name : name,
+        blurb : blurb,
+        logo : logo,
+        username : username,
+        userrole : userrole,
+        useremail : useremail
+      };
+
+      pushToFirebase(database, 'organizations', data)
+
+    }); 
+  </script>
+</body>
+</html>
