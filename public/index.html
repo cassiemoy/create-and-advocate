@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase.js"></script>
+  <script type="text/javascript" src="js/firebase.js"></script>
 </head>
 <body>
 
@@ -32,6 +34,8 @@
     <input type="submit" value="Create Marcher">
   </form>
 
+  <div id="marchers"></div>
+
   <button id="button">Get stuff from Firebase</button><br/>
   <button id="generate-group">Set off the generate groups algo!</button>
   <div id="results"></div>
@@ -39,22 +43,11 @@
   <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase.js"></script>
   <script>
 
-    // Initialize Firebase
-
-    var config = {
-      apiKey: "AIzaSyCnZ0Otme1WwhM4-CEKZtLjGHCpspa4Kdw",
-      authDomain: "function-demo-bd359.firebaseapp.com",
-      databaseURL: "https://function-demo-bd359.firebaseio.com/"
-    };
-
-    firebase.initializeApp(config);
-    var database = firebase.database();
-
     // Testing connection to Firebase DB
 
     document.getElementById('button').addEventListener('click', function() {   
-      database.ref('/calculations').once('value').then(function(snapshot) {
-        console.log(snapshot.val());
+      database.ref('/marchers').once('value').then(function(snapshot) {
+        document.getElementById('marchers').innerHTML = snapshot.val();
       });
     }); 
 
@@ -70,7 +63,7 @@
       var zip = document.getElementById('zip').value;
 
       var askChoices = [];
-      document.getElementsByName('ask-choice').forEach(function(element) { askChoices.push(element.value) });
+      document.getElementsByName('ask-choice').forEach(function(element) { askChoices.push(parseInt(element.value)) });
       
       var newMarcherKey = database.ref().child('marchers').push().key;
 
