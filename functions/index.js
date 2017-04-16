@@ -32,8 +32,12 @@ exports.squareNumber = functions.database.ref('/calculations/{pushId}/number')
 // Hooking up the below algo
 
 exports.generateGroups = functions.https.onRequest((req, res) => {
-  console.log(admin.database().ref('/marchers')[0]);
-  console.log(JSON.stringify(assign(responses)));
+  admin.database().ref('/marchers').on('value', function(snapshot) {
+    console.log(snapshot.val());
+  });
+
+  var groups = JSON.stringify(assign(responses));
+  return admin.database().ref('groups').set({ groups: groups });
 });
 
 // Francis' grouping algo
@@ -145,5 +149,3 @@ function assign(responses) {
     return groups;
   });
 }
-
-//console.log(JSON.stringify(assign(responses)));
